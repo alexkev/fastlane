@@ -94,9 +94,9 @@ module Spaceship
         @expiration = now + @duration
 
         header = {
+          alg: 'ES256',  # Explicitly include the algorithm in the header
           kid: key_id,
-          typ: 'JWT',
-          alg: 'ES256'  # Explicitly include the algorithm in the header
+          typ: 'JWT'
         }
 
         payload = {
@@ -107,11 +107,11 @@ module Spaceship
         }
         if issuer_id
           payload[:iss] = issuer_id
-          payload[:sub] = key_id  # Include sub as key_id when issuer_id is present
         else
           # Consider the key as individual key.
           # https://developer.apple.com/documentation/appstoreconnectapi/generating_tokens_for_api_requests#4313913
           payload[:sub] = 'user'
+
         end
 
         @text = JWT.encode(payload, @key, 'ES256', header)
