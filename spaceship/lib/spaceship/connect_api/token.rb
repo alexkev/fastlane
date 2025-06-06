@@ -95,7 +95,8 @@ module Spaceship
 
         header = {
           kid: key_id,
-          typ: 'JWT'
+          typ: 'JWT',
+          alg: 'ES256'  # Explicitly include the algorithm in the header
         }
 
         payload = {
@@ -106,6 +107,7 @@ module Spaceship
         }
         if issuer_id
           payload[:iss] = issuer_id
+          payload[:sub] = key_id  # Include sub as key_id when issuer_id is present
         else
           # Consider the key as individual key.
           # https://developer.apple.com/documentation/appstoreconnectapi/generating_tokens_for_api_requests#4313913
